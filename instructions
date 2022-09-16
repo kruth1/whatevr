@@ -1,0 +1,278 @@
+This homework assignment gives you the opportunity to practice file I/O, sorting/searching, parallel arrays, functions with array arguments and reference variables.
+
+HW1 (Graded out of 100)
+Write a program that manages students’records. Each student’s record consists of a netID, a major and a GPA, maintained in parallel arrays. The program will read students’ data from a file and loop on displaying the following menu of choices:
+
+List the top n students
+Search for a student
+Exit the program.
+If the user chooses 1, the user will be prompted for the value of n, and the netID, major and GPA of the top n students will be listed, starting with the student with highest GPA and going down.
+If the user chooses 2, user will be prompted to enter the student’s netID. If the netID is found in the netID array, the array index, major and GPA of the student are displayed. If the student is not found, a “Student not found” message is displayed.
+If the user chooses 3, the program prints “Exiting\n” and terminates.
+
+1. Additional Requirements – Make sure you comply with all the requirements to avoid losing points
+a) Arrays definition
+Define these arrays in the main function (for consistency, please use the same names to make the grading easier):
+
+const int NUM_ELMTS = 18;
+
+// netID, major and GPA are parallel arrays
+int netID[NUM_ELMTS]; // Original netID array
+string major[NUM_ELMTS]; // Original major array
+double GPA[NUM_ELMTS]; // Original GPA array
+
+// sortedGPAbyGPA is sorted by GPA, and sortedNetIDbyGPA and sortedMajorbyGPA are parallel arrays
+double sortedGPAbyGPA[NUM_ELMTS]; // GPA array, sorted by GPA
+int sortedNetIDbyGPA[NUM_ELMTS]; 
+string sortedMajorbyGPA[NUM_ELMTS]; 
+
+// sortedNetIDbyID is sorted by netID, and sortedMajorbyID and sortedGPAbyID are parallel arrays 
+int sortedNetIDbyID[NUM_ELMTS]; // netID array,sorted by netID
+string sortedMajorbyID[NUM_ELMTS]; 
+double sortedGPAbyID[NUM_ELMTS];
+b) Arrays initialization
+The arrays will be initialized by reading from a file, and the program prompts the user for the file name.
+
+c) File
+The file is a text file containing student records. A student record consists of a student’s netID, followed by that student’s major, followed by that student’s GPA. An example of student record is as follows (for simplicity, assume the student’s netID is an int):
+
+1001 CS 3.8
+In the above record, the netID is 1001, major is CS, and GPA is 3.8.
+
+You may assume the data is properly formatted and therefore there is no need for input validation when reading from the file.
+
+The number of records in the file is unknown but you may assume it is at most NUM_ELMTS.
+
+d) Search for a student
+When the user selects choice 2, your program will perform both a linear search and a binary search, and display the result from both. You may use the C++ code provided in the lectures, with the necessary adaptations.
+
+The linear search is performed on the original array, netID[NUM_ELMTS].
+
+The binary search can only be performed on a sorted array, but netID is not sorted. Normally when an array is sorted, the values in the array are modified. Since we want to preserve the values of the netID array (in order to do linear search on the original array), we make a copy of netID called sortedNetIDbyID, and sort the copy by netID. The binary search will be performed on sortedNetIDbyID.
+
+To be able to display the major and GPA of the student found, we will maintain sortedMajorbyID and sortedGPAbyID, which are the arrays parallel to sortedNetIDbyID. That is, sortedMajorbyID[i] and sortedGPAbyID[i] are respectively the major and the GPA of the student whose netID is sortedNetIDbyID[i].
+
+You can use one of the sorting algorithms (bubble sort or selection sort) taught in class. However, to maintain the parallelism of the arrays, whenever you swap elements of sortedNetIDbyID, you should also swap the elements at the same indices of sortedMajorbyID and sortedGPAbyID.
+
+Your code should also keep track of how many iterations the search went through and the main function should display the number of iterations, for both linear search and binary search.
+
+e) List the top n students
+To list the top students, your program will sort the GPA array by GPA. To preserve the original GPA array, sort a copy of GPA called sortedGPAbyGPA. To be able to display the netID and major, you should also maintain arrays parallel to sortedGPAbyGPA called sortedMajorbyGPA and sortedNetIDbyGPA. Like before, you can use one of the sorting algorithms taught in class, but need to maintain the parallelism. Whenever you swap elements of sortedGPAbyGPA, you should also swap the elements at the same indices of sortedMajorbyGPA and sortedNetIDbyGPA.
+
+You may assume the user always types a positive integer. If the user types a value of n greater than the number of students, the program should list all the students sorted by GPA, starting with the highest.
+
+f) Outline of main
+Prompt the user for a file name.  
+
+Open the file and read the data to initialize the netID, major and GPA arrays. If the file cannot be opened, print “Could not open file” and “Exiting\n” and terminate.   
+
+Copy netID to sortedNetIDbyGPA, copy GPA to sortedGPAbyGPA and copy major to sortedMajorbyGPA. Sort sortedGPAbyGPA by GPA, while maintaining the parallelism of sortedNetIDbyGPA and sortedMajorbyGPA  
+
+Copy netID to sortedNetIDbyID, copy GPA to sortedGPAbyID and copy major to sortedMajorbyID. Sort sortedNetIDbyID by ID, while maintaining the parallelism of sortedGPAbyID and sortedMajorbyID  
+
+Display the contents of all the arrays  
+
+Display the menu of choices, and perform the action selected by the user on the menu (search, list the top n students, or quit). If the user chooses “search”, the main function should call both the linear search and binary search functions, and display the result of both searches, along with the number of iterations.  
+
+The  main  function should loop on displaying the menu as long as the user does not choose to quit. If the user chooses to quit,  the program  should print “Exiting\n” and terminate.
+g) Display arrays
+GPAs should be displayed with a decimal point followed by 2 digits.
+
+i) Search functions
+Implement the following functions. You must use the same function name, parameter list and return type to pass the unit tests.
+
+/* This function implements linear search on an array. It takes the following arguments:
+arr: the array, numElems: number of elements of array,
+value: search value, and nIter. nIter is a reference variable used
+to pass the number of iterations back to the calling function.
+The function returns the index where the match is found, -1 if no
+match is found
+*/
+int linearSearchID(int arr[], int numElems, int value, int &nIter)
+{
+    // Function body 
+}
+
+/* This function implements binary search on an array. It takes the following arguments:
+arr: the array, numElems: number of elements of array,
+value: search value, and nIter. nIter is a reference variable used
+to pass the number of iterations back to the calling function.
+The function returns the index where the match is found, -1 if no
+match is found
+*/
+int binarySearchID(int arr[], int numElems, int value, int &nIter)
+{
+    // Function body
+}
+h) Sort functions
+Implement the following functions. You must use the same function name, parameter list and return type to pass the unit tests.
+
+/* This function sorts array1 and maintains the parallelism
+of array2, and array3
+Whenever elements of array1 are swapped, the elements of array 2
+and array3 at the same indices are also swapped
+*/
+void modifiedSortGPA(double array1[], int array2[], string array3[], int size)
+{
+   // Function body
+}
+
+/* This function sorts array2 and maintains the parallelism
+of array1 and array3
+Whenever elements of array2 are swapped, the elements of array 1
+and array3 at the same indices are also swapped
+*/
+void modifiedSortID(int array2[], double array1[], string array3[], int size)
+{
+   // Function body
+}
+j) Style
+Make sure you follow the style requirements in the “Homework Notes” to avoid losing points.
+
+2. Grading criteria
+Source code inspection (grader)
+*Style: 10 points (refer to the “Homework Notes” for the style requirements)
+Code compilation and execution (zylabs)
+*Test-1 - Print error message if file does not exist – Output matches exactly output-1: 2 points
+*Test-2 - Display the original arrays - Output starts like output-2: 8 points
+*Test-3 - Display the arrays sorted by GPA - Output contains output-3: 12 points
+*Test-4 - Display the arrays sorted by netID and menu - Output ends like output-4: 12 points
+*Test-5 –List the top n students - Output ends like output-5: 12 points
+*Test-6 – Search for a student- Output ends like output-6: 12 points
+*Test-7 – Search for a non existent student - Output ends like output-7: 12 points
+*Test-8 – modifiedSortID unit test: 5 points
+*Test-9 – modifiedSortGPA unit test: 5 points
+*Test-10 - linear search unit test: 5 points
+*Test-11- binary search unit test: 5 points
+3. Output screenshots
+Here are the expected screenshots when the program is executed on an external IDE.
+
+Enter file name: in0.txt
+Could not open file
+Exiting
+Output-1
+
+Enter file name: in1.txt
+Original arrays:
+----------------
+index  netID  major   GPA   index  netID  major   GPA
+    0   1007     ME  3.80       1   1013     CS  3.20   
+    2   1018    BME  3.75       3   1025     CS  3.30   
+    4   1031     ME  2.90       5   1038     ME  3.00   
+    6   1043     EE  3.10       7   1048    BME  3.70   
+    8   1054     CS  3.95       9   1061     CS  3.50
+Output-2
+
+Arrays sorted by GPA:
+---------------------
+index  netID  major   GPA   index  netID  major   GPA
+    0   1031     ME  2.90       1   1038     ME  3.00   
+    2   1043     EE  3.10       3   1013     CS  3.20   
+    4   1025     CS  3.30       5   1061     CS  3.50   
+    6   1048    BME  3.70       7   1018    BME  3.75   
+    8   1007     ME  3.80       9   1054     CS  3.95
+Output-3
+
+Arrays sorted by netID:
+-----------------------
+index  netID  major   GPA   index  netID  major   GPA
+    0   1000     CS  3.70       1   2000     CE  3.20   
+    2   3000     ME  3.00       3   4000    BME  3.40   
+    4   5000     CS  3.50       5   6000     ME  3.10   
+
+***************
+Menu of choices
+***************
+1 - List top n students
+2 - Search on a netID
+3 – Quit
+3
+Exiting
+Output-4
+
+***************
+Menu of choices
+***************
+1 - List top n students
+2 - Search on a netID
+3 – Quit
+1
+Enter n: 12 
+Top 10 students are:
+
+netID: 1054, major: CS, GPA: 3.95
+netID: 1007, major: ME, GPA: 3.80
+netID: 1018, major: BME, GPA: 3.75
+netID: 1048, major: BME, GPA: 3.70
+netID: 1061, major: CS, GPA: 3.50
+netID: 1025, major: CS, GPA: 3.30
+netID: 1013, major: CS, GPA: 3.20
+netID: 1043, major: EE, GPA: 3.10
+netID: 1038, major: ME, GPA: 3.00
+netID: 1031, major: ME, GPA: 2.90
+
+***************
+Menu of choices
+***************
+1 - List top n students
+2 - Search on a netID
+3 – Quit
+3
+Exiting
+Output-5
+
+***************
+Menu of choices
+***************
+1 - List top n students
+2 - Search on a netID
+3 – Quit
+2
+Enter netID: 1013
+
+Result of linear search:
+------------------------
+Student found at index 1, GPA is 3.20
+It took 2 iterations
+
+Result of binary search:
+------------------------
+Student found at index 1, GPA is 3.20
+It took 2 iterations
+
+***************
+Menu of choices
+***************
+1 - List top n students
+2 - Search on a netID
+3 – Quit
+3
+Exiting
+Output-6
+
+***************
+Menu of choices
+***************
+1 - List top n students
+2 - Search on a netID
+3 – Quit
+2
+Enter netID: 1111 
+Result of linear search:
+------------------------
+Student not found
+It took 10 iterations
+
+Result of binary search:
+------------------------
+Student not found
+It took 4 iterations
+
+***************
+Menu of choices
+***************
+1 - List top n students
+2 - Search on a netID
+3 – Quit
+3
+Exiting
